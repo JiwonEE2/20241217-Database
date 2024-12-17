@@ -14,11 +14,22 @@ public class UIUserInfo : MonoBehaviour
 
 	private UserData userData;
 
+	private void Awake()
+	{
+		levelUpButton.onClick.AddListener(LevelUpButtonClick);
+	}
+
 	public void UserInfoOpen(UserData userData)
 	{
 		this.userData = userData;
 		userName.text = userData.userName;
 		characterClass.text = userData.characterClass;
 		level.text = $"Lv.{userData.level}";
+	}
+
+	private void LevelUpButtonClick()
+	{
+		print("Level up button clicked");
+		DatabaseManager.Instance.LevelUp(userData);
 	}
 }

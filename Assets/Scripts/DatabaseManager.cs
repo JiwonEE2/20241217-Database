@@ -1,4 +1,4 @@
-// MySqlConnection »ç¿ëÀ» À§ÇÔ
+// MySqlConnection ì‚¬ìš©ì„ ìœ„í•¨
 using MySqlConnector;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ public class DatabaseManager : MonoBehaviour
 	private string dbName = "game";
 	private string tableName = "users";
 	private string rootPasswd = "0909";
-	// mysqlDB(mariaDB)¿Í ¿¬°á »óÅÂ¸¦ À¯ÁöÇÏ´Â °´Ã¼
+	// mysqlDB(mariaDB)ì™€ ì—°ê²° ìƒíƒœë¥¼ ìœ ì§€í•˜ëŠ” ê°ì²´
 	private MySqlConnection conn;
 
 	public static DatabaseManager Instance { get; private set; }
@@ -29,33 +29,33 @@ public class DatabaseManager : MonoBehaviour
 		DBConnect();
 	}
 
-	// µ¥ÀÌÅÍ º£ÀÌ½º¿¡ Á¢¼Ó
+	// ë°ì´í„° ë² ì´ìŠ¤ì— ì ‘ì†
 	private async void DBConnect()
 	{
-		// µ¥ÀÌÅÍ º£ÀÌ½º Á¢¼Ó ¼³Á¤
-		// config ÆÄÀÏÀº Æ÷¸ËÀÌ Á¤ÇØÁ® ÀÖ´Ù.
-		// ¾Æ·¡Ã³·³ Á÷Á¢ ÀÛ¼ºÇÏ´Â ¹æ¹ıÀÌ ÀÖ°í, ´Ù¸¥¹æ¹ıµµ ÀÖ´Ù.
+		// ë°ì´í„° ë² ì´ìŠ¤ ì ‘ì† ì„¤ì •
+		// config íŒŒì¼ì€ í¬ë§·ì´ ì •í•´ì ¸ ìˆë‹¤.
+		// ì•„ë˜ì²˜ëŸ¼ ì§ì ‘ ì‘ì„±í•˜ëŠ” ë°©ë²•ì´ ìˆê³ , ë‹¤ë¥¸ë°©ë²•ë„ ìˆë‹¤.
 		string config = $"server={dbIp};port={port};database={dbName};uid=root;pwd={rootPasswd};charset=utf8;";
 
 		conn = new MySqlConnection(config);
-		print($"mysql Á¢¼Ó ½ÃÀÛ. state: {conn.State}");
+		print($"mysql ì ‘ì† ì‹œì‘. state: {conn.State}");
 		await conn.OpenAsync();
-		print($"mysql Á¢¼Ó ¼º°ø. state: {conn.State}");
+		print($"mysql ì ‘ì† ì„±ê³µ. state: {conn.State}");
 	}
 
 	public async void SignUp(string email, string userName, string passwd)
 	{
-		// ºñ¹Ğ¹øÈ£¸¦ ÇØ½¬ Å°·Î º¯°æÇÒ stringBuilder
+		// ë¹„ë°€ë²ˆí˜¸ë¥¼ í•´ì‰¬ í‚¤ë¡œ ë³€ê²½í•  stringBuilder
 		StringBuilder pwhash = new StringBuilder();
-		// SHA256 ÇØ½¬ ¾Ë°í¸®ÁòÀ» »ç¿ëÇØ ºñ¹Ğ¹øÈ£¸¦ ÇØ½¬ Å°·Î º¯°æ
+		// SHA256 í•´ì‰¬ ì•Œê³ ë¦¬ì¦˜ì„ ì‚¬ìš©í•´ ë¹„ë°€ë²ˆí˜¸ë¥¼ í•´ì‰¬ í‚¤ë¡œ ë³€ê²½
 		using (SHA256 sha256 = SHA256.Create())
 		{
 			byte[] hashArray = sha256.ComputeHash(Encoding.UTF8.GetBytes(passwd));
 			foreach (byte b in hashArray)
 			{
-				// stringBuilder¿¡ Ãß°¡
+				// stringBuilderì— ì¶”ê°€
 				pwhash.Append($"{b:X2}");
-				// ¾Æ·¡´Â À§¿Í °°´Ù
+				// ì•„ë˜ëŠ” ìœ„ì™€ ê°™ë‹¤
 				//pwhash.Append(b.ToString("X2"));
 			}
 		}
@@ -64,7 +64,7 @@ public class DatabaseManager : MonoBehaviour
 		using (MySqlCommand cmd = new MySqlCommand())
 		{
 			cmd.Connection = conn;
-			cmd.CommandText = $"INSERT INTO {tableName} VALUES('{email}','{pwhash}','{userName}','ÃÊº¸ÀÚ',1)";
+			cmd.CommandText = $"INSERT INTO {tableName} VALUES('{email}','{pwhash}','{userName}','ì´ˆë³´ì',1)";
 			int rowsAffected = 0;
 			try
 			{
@@ -72,17 +72,17 @@ public class DatabaseManager : MonoBehaviour
 			}
 			finally
 			{
-				// È¸¿ø °¡ÀÔ ¿Ï·á
+				// íšŒì› ê°€ì… ì™„ë£Œ
 				if (rowsAffected > 0)
 				{
 					UIManager.Instance.PageOpen("Popup");
-					UIManager.Instance.popup.PopupOpen("¾Ë¸²", "È¸¿ø °¡ÀÔ ¼º°ø", () => { UIManager.Instance.PageOpen("LogIn"); });
+					UIManager.Instance.popup.PopupOpen("ì•Œë¦¼", "íšŒì› ê°€ì… ì„±ê³µ", () => { UIManager.Instance.PageOpen("LogIn"); });
 				}
-				// È¸¿ø °¡ÀÔ ½ÇÆĞ
+				// íšŒì› ê°€ì… ì‹¤íŒ¨
 				else
 				{
 					UIManager.Instance.PageOpen("Popup");
-					UIManager.Instance.popup.PopupOpen("¾Ë¸²", "È¸¿ø °¡ÀÔ ½ÇÆĞ", () => { UIManager.Instance.PageOpen("LogIn"); });
+					UIManager.Instance.popup.PopupOpen("ì•Œë¦¼", "íšŒì› ê°€ì… ì‹¤íŒ¨", () => { UIManager.Instance.PageOpen("LogIn"); });
 				}
 			}
 		}
@@ -90,17 +90,17 @@ public class DatabaseManager : MonoBehaviour
 
 	public async void LogIn(string email, string passwd)
 	{
-		// ºñ¹Ğ¹øÈ£¸¦ ÇØ½¬ Å°·Î º¯°æÇÒ stringBuilder
+		// ë¹„ë°€ë²ˆí˜¸ë¥¼ í•´ì‰¬ í‚¤ë¡œ ë³€ê²½í•  stringBuilder
 		StringBuilder pwhash = new StringBuilder();
-		// SHA256 ÇØ½¬ ¾Ë°í¸®ÁòÀ» »ç¿ëÇØ ºñ¹Ğ¹øÈ£¸¦ ÇØ½¬ Å°·Î º¯°æ
+		// SHA256 í•´ì‰¬ ì•Œê³ ë¦¬ì¦˜ì„ ì‚¬ìš©í•´ ë¹„ë°€ë²ˆí˜¸ë¥¼ í•´ì‰¬ í‚¤ë¡œ ë³€ê²½
 		using (SHA256 sha256 = SHA256.Create())
 		{
 			byte[] hashArray = sha256.ComputeHash(Encoding.UTF8.GetBytes(passwd));
 			foreach (byte b in hashArray)
 			{
-				// stringBuilder¿¡ Ãß°¡
+				// stringBuilderì— ì¶”ê°€
 				pwhash.Append($"{b:X2}");
-				// ¾Æ·¡´Â À§¿Í °°´Ù
+				// ì•„ë˜ëŠ” ìœ„ì™€ ê°™ë‹¤
 				//pwhash.Append(b.ToString("X2"));
 			}
 		}
@@ -110,60 +110,77 @@ public class DatabaseManager : MonoBehaviour
 			cmd.Connection = conn;
 			cmd.CommandText = $"SELECT email, username, class, level FROM {tableName} WHERE email='{email}' AND pw='{pwhash}';";
 
-			MySqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-			// ·Î±×ÀÎ ¼º°ø
-			if (reader.Read())
+			using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
 			{
-				print($"·Î±×ÀÎ ¼º°ø. email: {reader[0]}, ÀÌ¸§: {reader[1]}, Á÷¾÷: {reader[2]}, level: {reader[3]}");
+				// ë¡œê·¸ì¸ ì„±ê³µ
+				if (reader.Read())
+				{
+					print($"ë¡œê·¸ì¸ ì„±ê³µ. email: {reader[0]}, ì´ë¦„: {reader[1]}, ì§ì—…: {reader[2]}, level: {reader[3]}");
 
-				UserData userData = new UserData(reader[0].ToString(), reader[1].ToString(), reader[2].ToString(), (int)reader[3]);
+					UserData userData = new UserData(reader[0].ToString(), reader[1].ToString(), reader[2].ToString(), (int)reader[3]);
 
-				UIManager.Instance.PageOpen("UserInfo");
-				UIManager.Instance.userInfo.UserInfoOpen(userData);
-			}
-			// ·Î±×ÀÎ ½ÇÆĞ
-			else
-			{
-				//print("·Î±×ÀÎ ½ÇÆĞ");
-				UIManager.Instance.PageOpen("Popup");
-				UIManager.Instance.popup.PopupOpen("¾Ë¸²", "·Î±×ÀÎ ½ÇÆĞ", () => UIManager.Instance.PageOpen("LogIn"));
+					UIManager.Instance.PageOpen("UserInfo");
+					UIManager.Instance.userInfo.UserInfoOpen(userData);
+				}
+				// ë¡œê·¸ì¸ ì‹¤íŒ¨
+				else
+				{
+					//print("ë¡œê·¸ì¸ ì‹¤íŒ¨");
+					UIManager.Instance.PageOpen("Popup");
+					UIManager.Instance.popup.PopupOpen("ì•Œë¦¼", "ë¡œê·¸ì¸ ì‹¤íŒ¨", () => UIManager.Instance.PageOpen("LogIn"));
+				}
 			}
 		}
 	}
 
-	// µ¥ÀÌÅÍ Á¶È¸°¡ °¡´ÉÇÑ Áö Å×½ºÆ®
+	public async void LevelUp(UserData userData)
+	{
+		using (MySqlCommand cmd = new MySqlCommand())
+		{
+			userData.level++;
+			cmd.Connection = conn;
+			cmd.CommandText = $"UPDATE {tableName} SET level={userData.level}	WHERE email='{userData.email}';";
+
+			using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
+			{
+				UIManager.Instance.userInfo.UserInfoOpen(userData);
+			}
+
+		}
+	}
+
+	// ë°ì´í„° ì¡°íšŒê°€ ê°€ëŠ¥í•œ ì§€ í…ŒìŠ¤íŠ¸
 	public void SelectAll()
 	{
-		// ÁúÀÇ(query)¸¦ ¼öÇàÇÒ command °´Ã¼ »ı¼º
+		// ì§ˆì˜(query)ë¥¼ ìˆ˜í–‰í•  command ê°ì²´ ìƒì„±
 		MySqlCommand cmd = new MySqlCommand();
 
-		// ¿¬°áÇÒ db¸¦ ÀÔ·Â
+		// ì—°ê²°í•  dbë¥¼ ì…ë ¥
 		cmd.Connection = conn;
-		// users Å×ÀÌºí Á¶È¸
+		// users í…Œì´ë¸” ì¡°íšŒ
 		cmd.CommandText = $"SELECT * FROM {tableName};";
 
-		// Äõ¸® °á°ú µ¥ÀÌÅÍ ¼ÂÀ» c#¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â ÇüÅÂ·Î ¸ÂÃçÁÜ
+		// ì¿¼ë¦¬ ê²°ê³¼ ë°ì´í„° ì…‹ì„ c#ì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” í˜•íƒœë¡œ ë§ì¶°ì¤Œ
 		MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
 		DataSet set = new DataSet();
 		dataAdapter.Fill(set);
 
-		// µ¥ÀÌÅÍ°¡ ¼º°øÀûÀ¸·Î Á¶È¸µÇ¾ú´Â Áö ¿©ºÎ¸¦ DataSetÀÇ µ¥ÀÌºí °³¼ö¿Í Çà °³¼ö¸¦ ÅëÇØ È®ÀÎ
+		// ë°ì´í„°ê°€ ì„±ê³µì ìœ¼ë¡œ ì¡°íšŒë˜ì—ˆëŠ” ì§€ ì—¬ë¶€ë¥¼ DataSetì˜ ë°ì´ë¸” ê°œìˆ˜ì™€ í–‰ ê°œìˆ˜ë¥¼ í†µí•´ í™•ì¸
 		bool isSelectSucceed = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
 
-		// Á¶È¸ ¼º°ø
+		// ì¡°íšŒ ì„±ê³µ
 		if (isSelectSucceed)
 		{
-			print("µ¥ÀÌÅÍ Á¶È¸ ¼º°ø");
+			print("ë°ì´í„° ì¡°íšŒ ì„±ê³µ");
 			foreach (DataRow row in set.Tables[0].Rows)
 			{
-				print($"ÀÌ¸ŞÀÏ: {row["email"]}, ÀÌ¸§: {row["username"]}, Á÷¾÷: {row["class"]}, ·¹º§: {row["level"]}");
+				print($"ì´ë©”ì¼: {row["email"]}, ì´ë¦„: {row["username"]}, ì§ì—…: {row["class"]}, ë ˆë²¨: {row["level"]}");
 			}
 		}
-		// Á¶È¸ ½ÇÆĞ
+		// ì¡°íšŒ ì‹¤íŒ¨
 		else
 		{
-			print("µ¥ÀÌÅÍ Á¶È¸ ½ÇÆĞ");
+			print("ë°ì´í„° ì¡°íšŒ ì‹¤íŒ¨");
 		}
 	}
 }
