@@ -11,12 +11,14 @@ public class UIUserInfo : MonoBehaviour
 	public TextMeshProUGUI level;
 
 	public Button levelUpButton;
+	public Button deleteButton;
 
 	private UserData userData;
 
 	private void Awake()
 	{
 		levelUpButton.onClick.AddListener(LevelUpButtonClick);
+		deleteButton.onClick.AddListener(DeleteButtonClick);
 	}
 
 	public void UserInfoOpen(UserData userData)
@@ -29,7 +31,11 @@ public class UIUserInfo : MonoBehaviour
 
 	private void LevelUpButtonClick()
 	{
-		print("Level up button clicked");
 		DatabaseManager.Instance.LevelUp(userData);
+	}
+
+	private void DeleteButtonClick()
+	{
+		DatabaseManager.Instance.DeleteAccount(userData);
 	}
 }

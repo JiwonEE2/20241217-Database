@@ -145,7 +145,20 @@ public class DatabaseManager : MonoBehaviour
 			{
 				UIManager.Instance.userInfo.UserInfoOpen(userData);
 			}
+		}
+	}
 
+	public async void DeleteAccount(UserData userData)
+	{
+		using (MySqlCommand cmd = new MySqlCommand())
+		{
+			cmd.Connection = conn;
+			cmd.CommandText = $"DELETE FROM {tableName} WHERE email='{userData.email}';";
+
+			using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
+			{
+				UIManager.Instance.PageOpen("LogIn");
+			}
 		}
 	}
 
