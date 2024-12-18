@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 	public UIUserInfo userInfo;
 	// 팝업(회원가입 완료)
 	public UIPopup popup;
+	public UIRank rank;
 
 	private Dictionary<string, GameObject> pages = new Dictionary<string, GameObject>();
 
@@ -27,6 +28,7 @@ public class UIManager : MonoBehaviour
 		pages.Add("LogIn", logIn.gameObject);
 		pages.Add("UserInfo", userInfo.gameObject);
 		pages.Add("Popup", popup.gameObject);
+		pages.Add("Rank", rank.gameObject);
 	}
 
 	private void Start()

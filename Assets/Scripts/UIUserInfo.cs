@@ -12,6 +12,7 @@ public class UIUserInfo : MonoBehaviour
 
 	public Button levelUpButton;
 	public Button deleteButton;
+	public Button rankingButton;
 
 	private UserData userData;
 
@@ -19,6 +20,7 @@ public class UIUserInfo : MonoBehaviour
 	{
 		levelUpButton.onClick.AddListener(LevelUpButtonClick);
 		deleteButton.onClick.AddListener(DeleteButtonClick);
+		rankingButton.onClick.AddListener(RankingButtonClick);
 	}
 
 	public void UserInfoOpen(UserData userData)
@@ -37,5 +39,10 @@ public class UIUserInfo : MonoBehaviour
 	private void DeleteButtonClick()
 	{
 		DatabaseManager.Instance.DeleteAccount(userData);
+	}
+
+	private void RankingButtonClick()
+	{
+		UIManager.Instance.PageOpen("Rank");
 	}
 }

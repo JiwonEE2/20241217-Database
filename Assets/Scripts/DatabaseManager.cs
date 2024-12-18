@@ -162,6 +162,11 @@ public class DatabaseManager : MonoBehaviour
 		}
 	}
 
+	public void GetAllAccount()
+	{
+		SelectAll();
+	}
+
 	// 데이터 조회가 가능한 지 테스트
 	public void SelectAll()
 	{
