@@ -1,22 +1,22 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-	// È¸¿ø°¡ÀÔ ÆäÀÌÁö
+	// íšŒì›ê°€ì… í˜ì´ì§€
 	public UISignUp signUp;
-	// ·Î±×ÀÎ ÆäÀÌÁö
+	// ë¡œê·¸ì¸ í˜ì´ì§€
 	public UILogIn logIn;
-	// »ç¿ëÀÚ Á¤º¸ ÆäÀÌÁö
+	// ì‚¬ìš©ì ì •ë³´ í˜ì´ì§€
 	public UIUserInfo userInfo;
-	// ÆË¾÷(È¸¿ø°¡ÀÔ ¿Ï·á)
+	// íŒì—…(íšŒì›ê°€ì… ì™„ë£Œ)
 	public UIPopup popup;
 	public UIRank rank;
 
 	private Dictionary<string, GameObject> pages = new Dictionary<string, GameObject>();
 
-	// ÇöÀç ¿­·ÁÀÖ´Â ÆäÀÌÁö
+	// í˜„ì¬ ì—´ë ¤ìˆëŠ” í˜ì´ì§€
 	private GameObject currentPage;
 
 	public static UIManager Instance;

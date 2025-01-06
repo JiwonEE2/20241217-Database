@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -31,7 +31,7 @@ public class UISignUp : MonoBehaviour
 	private void SignUpButtonClick()
 	{
 		DatabaseManager.Instance.SignUp(email.text, userName.text, passwd.text);
-		// ¡ﬂ∫π ≈¨∏Ø πÊ¡ˆ
+		// Ï§ëÎ≥µ ÌÅ¥Î¶≠ Î∞©ÏßÄ
 		signUpButton.interactable = false;
 	}
 }

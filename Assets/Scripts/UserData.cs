@@ -1,6 +1,6 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
-// DataRow »ç¿ëÀ» À§ÇÔ
+// DataRow ì‚¬ìš©ì„ ìœ„í•¨
 using System.Data;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class UserData
 	public string characterClass;
 	public int level;
 
-	// ´Ù¸¥ »ı¼ºÀÚ¸¦ Àç»ç¿ëÇÏ¿© »ı¼ºÀÚ ¿À¹ö·Îµù
+	// ë‹¤ë¥¸ ìƒì„±ìë¥¼ ì¬ì‚¬ìš©í•˜ì—¬ ìƒì„±ì ì˜¤ë²„ë¡œë”©
 	public UserData(DataRow row) : this(row["email"].ToString(), row["username"].ToString(), row["class"].ToString(), int.Parse(row["level"].ToString())) { }
 
 	public UserData(string email, string userName, string characterClass, int level)
